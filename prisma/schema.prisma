@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model TournamentConfig {
+  id        String          @id @default(cuid())
+  name      String          @default("Love Lifts 3v3 Tournament")
+  date      DateTime
+  venue     String?
+  phase     TournamentPhase @default(REGISTRATION)
+  updatedAt DateTime        @updatedAt
+}
+
+enum TournamentPhase {
+  REGISTRATION
+  POOL_PLAY
+  ELIMINATION
+  COMPLETE
+}
+
+enum UserRole {
+  ADMIN
+  SCOREKEEPER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(ADMIN)
+  createdAt DateTime @default(now())
+}
+
+model Court {
+  id    String @id @default(cuid())
+  name  String
+  order Int    @default(0)
+  games Game[]
+}
+
+model Division {
+  id     String   @id @default(cuid())
+  name   String   @unique
+  slug   String   @unique
+  order  Int      @default(0)
+  active Boolean  @default(true)
+  teams  Team[]
+  pools  Pool[]
+  games  Game[]
+}
+
+model Team {
+  id           String     @id @default(cuid())
+  name         String
+  contactName  String?
+  contactPhone String?
+  divisionId   String
+  division     Division   @relation(fields: [divisionId], references: [id])
+  poolTeams    PoolTeam[]
+  homeGames    Game[]     @relation("HomeTeam")
+  awayGames    Game[]     @relation("AwayTeam")
+  wonGames     Game[]     @relation("WinnerTeam")
+  createdAt    DateTime   @default(now())
+}
+
+model Pool {
+  id         String     @id @default(cuid())
+  name       String
+  divisionId String
+  division   Division   @relation(fields: [divisionId], references: [id])
+  teams      PoolTeam[]
+  games      Game[]
+  order      Int        @default(0)
+}
+
+model PoolTeam {
+  id     String @id @default(cuid())
+  poolId String
+  pool   Pool   @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id])
+  seed   Int    @default(0)
+
+  @@unique([poolId, teamId])
+}
+
+model Game {
+  id            String     @id @default(cuid())
+  courtId       String?
+  court         Court?     @relation(fields: [courtId], references: [id])
+  scheduledTime   DateTime?
+  actualStartTime DateTime?
+
+  homeTeamId String?
+  homeTeam   Team?   @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeamId String?
+  awayTeam   Team?   @relation("AwayTeam", fields: [awayTeamId], references: [id])
+
+  homeScore Int?
+  awayScore Int?
+  winnerId  String?
+  winner    Team?   @relation("WinnerTeam", fields: [winnerId], references: [id])
+
+  poolId     String?
+  pool       Pool?     @relation(fields: [poolId], references: [id])
+  divisionId String?
+  division   Division? @relation(fields: [divisionId], references: [id])
+
+  gameType GameType   @default(POOL)
+  status   GameStatus @default(SCHEDULED)
+
+  bracketRound Int?
+  bracketSlot  Int?
+  label        String?
+
+  homeSourceGameId String?
+  homeSourceGame   Game?   @relation("HomeSource", fields: [homeSourceGameId], references: [id])
+  awaySourceGameId String?
+  awaySourceGame   Game?   @relation("AwaySource", fields: [awaySourceGameId], references: [id])
+  homeSourceOf     Game[]  @relation("HomeSource")
+  awaySourceOf     Game[]  @relation("AwaySource")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum GameType {
+  POOL
+  ELIMINATION
+  QUALIFYING
+}
+
+enum GameStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+}
