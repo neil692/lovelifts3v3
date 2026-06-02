@@ -14,8 +14,9 @@ export const authConfig: NextAuthConfig = {
       return token;
     },
     session({ session, token }) {
-      if (token.id) session.user.id = token.id as string;
-      if (token.role) (session.user as { role?: string }).role = token.role as string;
+      const t = token as { id?: string; role?: string };
+      if (t.id) session.user.id = t.id;
+      if (t.role) (session.user as { role?: string }).role = t.role;
       return session;
     },
   },
