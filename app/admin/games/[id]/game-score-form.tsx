@@ -40,6 +40,7 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
     toETTimeString(game.actualStartTime ?? game.scheduledTime)
   );
   const [loading, setLoading] = useState(false);
+  const [confirmHighScore, setConfirmHighScore] = useState(false);
   const isComplete = game.status === "COMPLETED";
 
   async function handleSaveTime() {
@@ -69,6 +70,11 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
       toast.error("Ties are not allowed — scores must be different.");
       return;
     }
+    if ((hs > 30 || as_ > 30) && !confirmHighScore) {
+      setConfirmHighScore(true);
+      return;
+    }
+    setConfirmHighScore(false);
     setLoading(true);
     await submitScore(game.id, hs, as_);
     setLoading(false);
@@ -134,7 +140,7 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
             type="number"
             min="0"
             value={homeScore}
-            onChange={(e) => setHomeScore(e.target.value)}
+            onChange={(e) => { setHomeScore(e.target.value); setConfirmHighScore(false); }}
             className="input w-full text-4xl font-black text-center py-5"
             placeholder="0"
           />
@@ -151,11 +157,17 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
             type="number"
             min="0"
             value={awayScore}
-            onChange={(e) => setAwayScore(e.target.value)}
+            onChange={(e) => { setAwayScore(e.target.value); setConfirmHighScore(false); }}
             className="input w-full text-4xl font-black text-center py-5"
             placeholder="0"
           />
         </div>
+
+        {confirmHighScore && (
+          <div className="rounded-lg bg-amber-500/15 border border-amber-500/40 px-4 py-3 text-amber-600 text-sm font-semibold text-center">
+            Are you sure? Confirm the score.
+          </div>
+        )}
 
         <div className="flex gap-3 pt-2">
           <button
@@ -163,7 +175,7 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
             disabled={loading}
             className="btn-primary flex-1 py-3 text-sm font-semibold"
           >
-            {loading ? "Saving…" : isComplete ? "Update Score" : "Save Score"}
+            {loading ? "Saving…" : confirmHighScore ? "Yes, Save Score" : isComplete ? "Update Score" : "Save Score"}
           </button>
           {isComplete && (
             <button
