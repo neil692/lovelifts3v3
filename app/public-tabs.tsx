@@ -122,7 +122,7 @@ function ScheduleTab({ games, teams }: { games: ScheduleGame[]; teams: TeamEntry
 
 // ─── Results tab ──────────────────────────────────────────────────────────────
 function ResultsTab({ divisions }: { divisions: PublicDivision[] }) {
-  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+  const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set(divisions.map((d) => d.id)));
 
   function toggle(id: string) {
     setCollapsed((prev) => {
