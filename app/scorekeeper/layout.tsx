@@ -7,7 +7,7 @@ export default async function ScorekeeperLayout({ children }: { children: React.
   if (!session) redirect("/login");
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col sk-theme">
       <header className="border-b border-[var(--border)] bg-[var(--surface)] sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
           <span className="text-[var(--accent)] font-black text-sm">🏀 Scorekeeper</span>

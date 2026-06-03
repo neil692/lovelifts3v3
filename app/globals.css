@@ -35,7 +35,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
-  color: white;
+  color: var(--foreground);
   font-size: 0.875rem;
   outline: none;
   transition: border-color 0.15s;
@@ -66,7 +66,7 @@ select.input option { background: var(--surface-2); }
   transition: color 0.15s;
   white-space: nowrap;
 }
-.btn-ghost:hover { color: white; }
+.btn-ghost:hover { color: var(--foreground); }
 
 .section-heading {
   font-size: 0.7rem;
@@ -79,3 +79,19 @@ select.input option { background: var(--surface-2); }
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Scorekeeper outdoor theme — high contrast for bright sunlight */
+.sk-theme {
+  --background: #ffffff;
+  --surface: #f4f4f5;
+  --surface-2: #e4e4e7;
+  --border: #a1a1aa;
+  --foreground: #09090b;
+  --muted: #3f3f46;
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 1.0625rem;
+}
+.sk-theme select.input option { background: var(--surface-2); color: var(--foreground); }

@@ -29,8 +29,8 @@ export default async function ScorekeeperPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-black text-white">Upcoming Games</h1>
-        <p className="text-[var(--muted)] text-sm mt-1">{games.length} games remaining</p>
+        <h1 className="text-3xl font-black text-[var(--foreground)]">Upcoming Games</h1>
+        <p className="text-[var(--muted)] text-base mt-1">{games.length} games remaining</p>
       </div>
 
       {games.length === 0 ? (
@@ -51,21 +51,21 @@ export default async function ScorekeeperPage() {
               <Link
                 key={game.id}
                 href={`/scorekeeper/games/${game.id}`}
-                className="flex items-center gap-4 px-4 py-3 hover:bg-[var(--surface-2)] transition-colors group"
+                className="flex items-center gap-4 px-4 py-4 hover:bg-[var(--surface-2)] transition-colors group"
               >
                 <div className="w-28 shrink-0">
-                  <div className="text-white text-sm font-semibold">{time}</div>
-                  <div className="text-[var(--muted)] text-xs">{game.court?.name ?? "—"}</div>
+                  <div className="text-[var(--foreground)] text-base font-bold">{time}</div>
+                  <div className="text-[var(--muted)] text-sm">{game.court?.name ?? "—"}</div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-white text-sm truncate">
+                  <div className="text-[var(--foreground)] text-base font-semibold truncate">
                     {game.homeTeam?.name ?? "TBD"} vs {game.awayTeam?.name ?? "TBD"}
                   </div>
-                  <div className="text-[var(--muted)] text-xs">
+                  <div className="text-[var(--muted)] text-sm">
                     {divName} · {gameTypeLabel(game.gameType, game.label)}
                   </div>
                 </div>
-                <span className="text-[var(--accent)] text-xs font-semibold shrink-0 group-hover:underline">
+                <span className="text-[var(--accent)] text-sm font-bold shrink-0 group-hover:underline">
                   Enter score →
                 </span>
               </Link>

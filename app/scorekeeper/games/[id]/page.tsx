@@ -30,17 +30,17 @@ export default async function ScorekeeperGamePage({ params }: { params: Promise<
 
   return (
     <div className="max-w-md mx-auto space-y-6">
-      <Link href="/scorekeeper" className="text-[var(--muted)] hover:text-white text-sm transition-colors">
+      <Link href="/scorekeeper" className="text-[var(--muted)] hover:text-[var(--foreground)] text-base font-medium transition-colors">
         ← Games
       </Link>
 
       <div>
-        <p className="text-[var(--accent)] text-xs font-semibold tracking-widest uppercase mb-1">
+        <p className="text-[var(--accent)] text-sm font-bold tracking-widest uppercase mb-1">
           {divName}
         </p>
-        <h1 className="text-2xl font-black text-white">Score Entry</h1>
+        <h1 className="text-3xl font-black text-[var(--foreground)]">Score Entry</h1>
         {(time || game.court) && (
-          <p className="text-[var(--muted)] text-sm mt-1">
+          <p className="text-[var(--muted)] text-base mt-1">
             {[time, game.court?.name].filter(Boolean).join(" · ")}
           </p>
         )}

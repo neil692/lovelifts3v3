@@ -131,7 +131,7 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
             min="0"
             value={homeScore}
             onChange={(e) => setHomeScore(e.target.value)}
-            className="input w-full text-2xl font-black text-center py-4"
+            className="input w-full text-4xl font-black text-center py-5"
             placeholder="0"
           />
         </div>
@@ -148,7 +148,7 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
             min="0"
             value={awayScore}
             onChange={(e) => setAwayScore(e.target.value)}
-            className="input w-full text-2xl font-black text-center py-4"
+            className="input w-full text-4xl font-black text-center py-5"
             placeholder="0"
           />
         </div>
