@@ -175,9 +175,6 @@ export default async function HomePage() {
       {/* Header */}
       <header className="border-b border-[var(--border)] bg-[var(--surface)]">
         <div className="max-w-2xl mx-auto px-4 py-6 text-center">
-          <p className="text-[var(--accent)] text-xs font-semibold tracking-widest uppercase mb-1">
-            Common Ground Northeast
-          </p>
           <h1 className="text-3xl font-black tracking-tight text-[var(--foreground)]">
             {config?.name ?? "Love Lifts 3v3 Tournament"}
           </h1>
