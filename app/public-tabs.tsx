@@ -70,7 +70,7 @@ function ScheduleTab({ games, teams }: { games: ScheduleGame[]; teams: TeamEntry
     <div className="space-y-6">
       {teams.length > 0 && (
         <div>
-          <p className="text-xs font-semibold tracking-widest uppercase text-[var(--muted)] mb-3">
+          <p className="text-sm font-semibold tracking-widest uppercase text-[var(--muted)] mb-3">
             Find Your Team
           </p>
           <TeamSearch teams={teams} />
@@ -78,11 +78,11 @@ function ScheduleTab({ games, teams }: { games: ScheduleGame[]; teams: TeamEntry
       )}
 
       <div>
-        <p className="text-xs font-semibold tracking-widest uppercase text-[var(--muted)] mb-3">
+        <p className="text-sm font-semibold tracking-widest uppercase text-[var(--muted)] mb-3">
           Upcoming Games
         </p>
         {games.length === 0 ? (
-          <p className="text-[var(--muted)] text-sm text-center py-10">No upcoming games.</p>
+          <p className="text-[var(--muted)] text-base text-center py-10">No upcoming games.</p>
         ) : (
           <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] divide-y divide-[var(--border)]">
             {games.map((g) => {
@@ -94,21 +94,21 @@ function ScheduleTab({ games, teams }: { games: ScheduleGame[]; teams: TeamEntry
                   })
                 : "—";
               return (
-                <div key={g.id} className="flex items-center gap-4 px-4 py-3">
+                <div key={g.id} className="flex items-center gap-4 px-4 py-4">
                   <div className="w-20 shrink-0">
-                    <div className="text-white text-sm font-semibold">{time}</div>
-                    <div className="text-[var(--muted)] text-xs">{g.court ?? "—"}</div>
+                    <div className="text-[var(--foreground)] text-base font-bold">{time}</div>
+                    <div className="text-[var(--muted)] text-sm">{g.court ?? "—"}</div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-sm truncate">
+                    <div className="text-[var(--foreground)] text-base font-semibold truncate">
                       {g.homeTeam ?? "TBD"} vs {g.awayTeam ?? "TBD"}
                     </div>
-                    <div className="text-[var(--muted)] text-xs">
+                    <div className="text-[var(--muted)] text-sm">
                       {g.divisionName} · {gameTypeLabel(g.gameType, g.label)}
                     </div>
                   </div>
                   {g.status === "IN_PROGRESS" && (
-                    <span className="text-[var(--accent)] text-xs font-bold shrink-0">Live</span>
+                    <span className="text-[var(--accent)] text-sm font-bold shrink-0">Live</span>
                   )}
                 </div>
               );
@@ -137,8 +137,8 @@ function ResultsTab({ divisions }: { divisions: PublicDivision[] }) {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <p className="text-[var(--muted)] text-sm flex items-center gap-1.5">
-          <span className="text-emerald-400 font-bold">✓</span>
+        <p className="text-[var(--muted)] text-base flex items-center gap-1.5">
+          <span className="text-emerald-500 font-bold">✓</span>
           Team advances to the final bracket
         </p>
         <p className="text-[var(--muted)] text-sm pl-5">
@@ -159,8 +159,8 @@ function ResultsTab({ divisions }: { divisions: PublicDivision[] }) {
               onClick={() => toggle(div.id)}
               className="w-full flex items-center justify-between px-4 py-3 bg-[var(--surface-2)] hover:bg-[var(--surface)] transition-colors"
             >
-              <span className="font-bold text-white text-sm">{div.name}</span>
-              <span className="text-[var(--muted)] text-sm">{isCollapsed ? "▸" : "▾"}</span>
+              <span className="font-bold text-[var(--foreground)] text-base">{div.name}</span>
+              <span className="text-[var(--muted)] text-base">{isCollapsed ? "▸" : "▾"}</span>
             </button>
 
             {!isCollapsed && (
@@ -203,10 +203,10 @@ export function PublicTabs({
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`flex-1 py-3 text-sm font-semibold capitalize transition-colors ${
+            className={`flex-1 py-3 text-base font-semibold capitalize transition-colors ${
               tab === t
-                ? "bg-[var(--accent)] text-black"
-                : "bg-[var(--surface)] text-[var(--muted)] hover:text-white"
+                ? "bg-[var(--accent)] text-white"
+                : "bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)]"
             }`}
           >
             {t === "schedule" ? "Schedule" : "Results"}

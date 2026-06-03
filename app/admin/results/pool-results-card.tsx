@@ -46,7 +46,7 @@ export function PoolResultsCard({
         {completedGames.length > 0 && (
           <button
             onClick={() => setExpanded((o) => !o)}
-            className="text-xs text-[var(--muted)] hover:text-white transition-colors"
+            className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
           >
             {expanded ? "Hide results" : `Show results (${completedGames.length})`}
           </button>
@@ -75,7 +75,7 @@ export function PoolResultsCard({
                   {qualified && (
                     <span className="text-emerald-400 text-xs font-bold leading-none" title="Qualified for bracket">✓</span>
                   )}
-                  <span className={qualified ? "text-emerald-400 font-semibold" : "text-white font-medium"}>
+                  <span className={qualified ? "text-emerald-400 font-semibold" : "text-[var(--foreground)] font-medium"}>
                     {s.teamName}
                   </span>
                 </div>
@@ -83,7 +83,7 @@ export function PoolResultsCard({
                   <span className="block text-[10px] text-[var(--muted)] ml-4">{s.tiebreakReason}</span>
                 )}
               </td>
-              <td className="text-center px-2 py-2.5 text-white font-semibold">{s.wins}</td>
+              <td className="text-center px-2 py-2.5 text-[var(--foreground)] font-semibold">{s.wins}</td>
               <td className="text-center px-2 py-2.5 text-[var(--muted)]">{s.losses}</td>
               <td className="text-right px-4 py-2.5 text-[var(--muted)] text-xs tabular-nums">
                 {s.avgPointDiff > 0 ? "+" : ""}{s.avgPointDiff.toFixed(1)}
@@ -106,11 +106,11 @@ export function PoolResultsCard({
             <div key={g.id} className="flex items-center justify-between px-4 py-2.5 bg-[var(--surface)]">
               <div className="text-sm text-[var(--muted)]">
                 {g.label && <span className="text-xs text-[var(--muted)] mr-2">{g.label}</span>}
-                <span className="text-white">{g.homeTeamName ?? "TBD"}</span>
+                <span className="text-[var(--foreground)]">{g.homeTeamName ?? "TBD"}</span>
                 <span className="mx-2 text-[var(--muted)]">vs</span>
-                <span className="text-white">{g.awayTeamName ?? "TBD"}</span>
+                <span className="text-[var(--foreground)]">{g.awayTeamName ?? "TBD"}</span>
               </div>
-              <div className="text-sm font-semibold text-white tabular-nums">
+              <div className="text-sm font-semibold text-[var(--foreground)] tabular-nums">
                 {g.homeScore} – {g.awayScore}
               </div>
             </div>
