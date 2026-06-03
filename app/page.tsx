@@ -201,11 +201,6 @@ export default async function HomePage() {
         />
       </main>
 
-      <footer className="text-center text-[var(--muted)] text-xs py-6 border-t border-[var(--border)]">
-        <Link href="/admin" className="hover:text-white transition-colors">
-          Admin
-        </Link>
-      </footer>
     </div>
   );
 }
