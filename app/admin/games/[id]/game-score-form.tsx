@@ -65,6 +65,10 @@ export function GameScoreForm({ game, returnPath = "/admin" }: { game: Game; ret
       toast.error("Enter valid scores.");
       return;
     }
+    if (hs === as_) {
+      toast.error("Ties are not allowed — scores must be different.");
+      return;
+    }
     setLoading(true);
     await submitScore(game.id, hs, as_);
     setLoading(false);
