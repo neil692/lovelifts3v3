@@ -58,9 +58,10 @@ model Division {
 model Team {
   id           String     @id @default(cuid())
   name         String
-  members      String?
   contactName  String?
-  contactPhone String?
+  player2      String?
+  player3      String?
+  player4      String?
   divisionId   String
   division     Division   @relation(fields: [divisionId], references: [id])
   poolTeams    PoolTeam[]

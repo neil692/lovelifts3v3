@@ -7,7 +7,7 @@ import { GeneratePoolsButton } from "@/app/admin/pools/generate-pools-button";
 
 type PoolTeamEntry = { id: string; seed: number; team: { id: string; name: string } };
 type Pool = { id: string; name: string; teams: PoolTeamEntry[] };
-type Team = { id: string; name: string; members: string | null; contactName: string | null; contactPhone: string | null; divisionId: string };
+type Team = { id: string; name: string; contactName: string | null; player2: string | null; player3: string | null; player4: string | null; divisionId: string };
 
 type DivisionData = {
   id: string;
@@ -24,14 +24,16 @@ export function DivisionCard({ division }: { division: DivisionData }) {
   const [editOpen, setEditOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
-  const [editMembers, setEditMembers] = useState("");
   const [editCaptain, setEditCaptain] = useState("");
-  const [editPhone, setEditPhone] = useState("");
+  const [editPlayer2, setEditPlayer2] = useState("");
+  const [editPlayer3, setEditPlayer3] = useState("");
+  const [editPlayer4, setEditPlayer4] = useState("");
   const [saving, setSaving] = useState(false);
   const [newName, setNewName] = useState("");
-  const [newMembers, setNewMembers] = useState("");
   const [newCaptain, setNewCaptain] = useState("");
-  const [newPhone, setNewPhone] = useState("");
+  const [newPlayer2, setNewPlayer2] = useState("");
+  const [newPlayer3, setNewPlayer3] = useState("");
+  const [newPlayer4, setNewPlayer4] = useState("");
   const [adding, setAdding] = useState(false);
 
   async function handleRename(e: React.FormEvent) {
@@ -47,14 +49,15 @@ export function DivisionCard({ division }: { division: DivisionData }) {
   function startEdit(team: Team) {
     setEditingId(team.id);
     setEditName(team.name);
-    setEditMembers(team.members ?? "");
     setEditCaptain(team.contactName ?? "");
-    setEditPhone(team.contactPhone ?? "");
+    setEditPlayer2(team.player2 ?? "");
+    setEditPlayer3(team.player3 ?? "");
+    setEditPlayer4(team.player4 ?? "");
   }
 
   async function handleSave(teamId: string) {
     setSaving(true);
-    await updateTeam(teamId, { name: editName, divisionId: division.id, members: editMembers, contactName: editCaptain, contactPhone: editPhone });
+    await updateTeam(teamId, { name: editName, divisionId: division.id, contactName: editCaptain, player2: editPlayer2, player3: editPlayer3, player4: editPlayer4 });
     setEditingId(null);
     setSaving(false);
     router.refresh();
@@ -70,11 +73,12 @@ export function DivisionCard({ division }: { division: DivisionData }) {
     e.preventDefault();
     if (!newName.trim()) return;
     setAdding(true);
-    await addTeam({ name: newName, divisionId: division.id, members: newMembers, contactName: newCaptain, contactPhone: newPhone });
+    await addTeam({ name: newName, divisionId: division.id, contactName: newCaptain, player2: newPlayer2, player3: newPlayer3, player4: newPlayer4 });
     setNewName("");
-    setNewMembers("");
     setNewCaptain("");
-    setNewPhone("");
+    setNewPlayer2("");
+    setNewPlayer3("");
+    setNewPlayer4("");
     setAdding(false);
     router.refresh();
   }
@@ -140,26 +144,11 @@ export function DivisionCard({ division }: { division: DivisionData }) {
                       placeholder="Team name"
                       className="input text-sm w-full"
                     />
-                    <textarea
-                      value={editMembers}
-                      onChange={(e) => setEditMembers(e.target.value)}
-                      placeholder="Team members (one per line)"
-                      rows={3}
-                      className="input text-sm w-full resize-none"
-                    />
                     <div className="grid grid-cols-2 gap-2">
-                      <input
-                        value={editCaptain}
-                        onChange={(e) => setEditCaptain(e.target.value)}
-                        placeholder="Captain name"
-                        className="input text-sm"
-                      />
-                      <input
-                        value={editPhone}
-                        onChange={(e) => setEditPhone(e.target.value)}
-                        placeholder="Phone"
-                        className="input text-sm"
-                      />
+                      <input value={editCaptain} onChange={(e) => setEditCaptain(e.target.value)} placeholder="Captain" className="input text-sm" />
+                      <input value={editPlayer2} onChange={(e) => setEditPlayer2(e.target.value)} placeholder="Player 2" className="input text-sm" />
+                      <input value={editPlayer3} onChange={(e) => setEditPlayer3(e.target.value)} placeholder="Player 3" className="input text-sm" />
+                      <input value={editPlayer4} onChange={(e) => setEditPlayer4(e.target.value)} placeholder="Player 4" className="input text-sm" />
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => handleSave(team.id)} disabled={saving} className="btn-primary text-xs py-1.5 px-3">Save</button>
@@ -171,7 +160,6 @@ export function DivisionCard({ division }: { division: DivisionData }) {
                     <div>
                       <span className="text-white text-sm font-medium">{team.name}</span>
                       {team.contactName && <span className="text-[var(--muted)] text-xs ml-2">{team.contactName}</span>}
-                      {team.contactPhone && <span className="text-[var(--muted)] text-xs ml-2">{team.contactPhone}</span>}
                     </div>
                     <div className="flex gap-3">
                       <button onClick={() => startEdit(team)} className="text-xs text-[var(--muted)] hover:text-white transition-colors">Edit</button>
@@ -192,26 +180,11 @@ export function DivisionCard({ division }: { division: DivisionData }) {
               required
               className="input text-sm w-full"
             />
-            <textarea
-              placeholder="Team members (one per line)"
-              value={newMembers}
-              onChange={(e) => setNewMembers(e.target.value)}
-              rows={3}
-              className="input text-sm w-full resize-none"
-            />
             <div className="grid grid-cols-2 gap-2">
-              <input
-                placeholder="Captain name"
-                value={newCaptain}
-                onChange={(e) => setNewCaptain(e.target.value)}
-                className="input text-sm"
-              />
-              <input
-                placeholder="Phone"
-                value={newPhone}
-                onChange={(e) => setNewPhone(e.target.value)}
-                className="input text-sm"
-              />
+              <input placeholder="Captain" value={newCaptain} onChange={(e) => setNewCaptain(e.target.value)} className="input text-sm" />
+              <input placeholder="Player 2" value={newPlayer2} onChange={(e) => setNewPlayer2(e.target.value)} className="input text-sm" />
+              <input placeholder="Player 3" value={newPlayer3} onChange={(e) => setNewPlayer3(e.target.value)} className="input text-sm" />
+              <input placeholder="Player 4" value={newPlayer4} onChange={(e) => setNewPlayer4(e.target.value)} className="input text-sm" />
             </div>
             <button type="submit" disabled={adding || !newName.trim()} className="btn-primary text-sm">
               {adding ? "Adding…" : "Add Team"}

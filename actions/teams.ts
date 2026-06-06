@@ -6,9 +6,10 @@ import { prisma } from "@/lib/db";
 export async function addTeam(data: {
   name: string;
   divisionId: string;
-  members?: string;
   contactName?: string;
-  contactPhone?: string;
+  player2?: string;
+  player3?: string;
+  player4?: string;
 }) {
   if (!data.name.trim() || !data.divisionId) {
     return { error: "Name and division are required." };
@@ -17,9 +18,10 @@ export async function addTeam(data: {
     data: {
       name: data.name.trim(),
       divisionId: data.divisionId,
-      members: data.members?.trim() || null,
       contactName: data.contactName?.trim() || null,
-      contactPhone: data.contactPhone?.trim() || null,
+      player2: data.player2?.trim() || null,
+      player3: data.player3?.trim() || null,
+      player4: data.player4?.trim() || null,
     },
   });
   revalidatePath("/admin/teams");
@@ -31,9 +33,10 @@ export async function updateTeam(
   data: {
     name: string;
     divisionId: string;
-    members?: string;
     contactName?: string;
-    contactPhone?: string;
+    player2?: string;
+    player3?: string;
+    player4?: string;
   }
 ) {
   if (!data.name.trim() || !data.divisionId) {
@@ -44,9 +47,10 @@ export async function updateTeam(
     data: {
       name: data.name.trim(),
       divisionId: data.divisionId,
-      members: data.members?.trim() || null,
       contactName: data.contactName?.trim() || null,
-      contactPhone: data.contactPhone?.trim() || null,
+      player2: data.player2?.trim() || null,
+      player3: data.player3?.trim() || null,
+      player4: data.player4?.trim() || null,
     },
   });
   revalidatePath("/admin/teams");
