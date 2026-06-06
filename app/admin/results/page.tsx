@@ -99,7 +99,8 @@ export default async function ResultsPage() {
           return { pool, standings, games };
         });
 
-        if (poolsWithData.length === 0) return null;
+        const totalTeams = div.pools.reduce((sum, p) => sum + p.teams.length, 0);
+        if (poolsWithData.length === 0 || totalTeams === 0) return null;
 
         return (
           <section key={div.id} className="space-y-3">

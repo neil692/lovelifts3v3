@@ -140,7 +140,7 @@ export default async function HomePage() {
     }));
 
     return { id: div.id, name: div.name, pools, qualifiedIds: Array.from(qualifiedIds) };
-  });
+  }).filter((div) => div.pools.some((p) => p.standings.length > 0));
 
   // ── Team search entries ─────────────────────────────────────────────────────
   const teamEntries: TeamEntry[] = teams.map((t) => {
