@@ -59,13 +59,22 @@ export function generatePoolSchedule(input: ScheduleInput): ScheduledGame[] {
 
   const results: ScheduledGame[] = [];
 
-  for (const pool of pools) {
-    const rounds = generateRounds(pool.teams);
+  // Pre-generate all rounds per pool, then schedule breadth-first (round 1 of
+  // every pool before round 2 of any pool). This ensures every division gets an
+  // early slot rather than later divisions being pushed to mid-morning.
+  const allPoolRounds = pools.map((pool) => ({
+    pool,
+    rounds: generateRounds(pool.teams),
+  }));
 
-    for (const round of rounds) {
-      // Find the earliest slot index where this round can be scheduled
+  const maxRounds = Math.max(0, ...allPoolRounds.map((pr) => pr.rounds.length));
+
+  for (let roundIdx = 0; roundIdx < maxRounds; roundIdx++) {
+    for (const { pool, rounds } of allPoolRounds) {
+      const round = rounds[roundIdx];
+      if (!round) continue;
+
       for (let si = 0; si < slots.length; si++) {
-        // Check rest for all teams in this round (2-slot minimum gap)
         const allRested = round.every(([home, away]) => {
           const hl = teamLastSlot.get(home.id) ?? -3;
           const al = teamLastSlot.get(away.id) ?? -3;
@@ -73,13 +82,11 @@ export function generatePoolSchedule(input: ScheduleInput): ScheduledGame[] {
         });
         if (!allRested) continue;
 
-        // Find free courts for this slot
         const freeCourts = sortedCourts.filter(
           (c) => !courtOccupied.get(c.id)!.has(si)
         );
         if (freeCourts.length < round.length) continue;
 
-        // Schedule this round
         round.forEach(([home, away], i) => {
           const court = freeCourts[i];
           courtOccupied.get(court.id)!.add(si);
