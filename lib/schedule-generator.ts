@@ -74,22 +74,19 @@ export function generatePoolSchedule(input: ScheduleInput): ScheduledGame[] {
       const round = rounds[roundIdx];
       if (!round) continue;
 
-      for (let si = 0; si < slots.length; si++) {
-        const allRested = round.every(([home, away]) => {
+      // Schedule each game in the round individually so courts fill up evenly.
+      for (const [home, away] of round) {
+        for (let si = 0; si < slots.length; si++) {
           const hl = teamLastSlot.get(home.id) ?? -3;
           const al = teamLastSlot.get(away.id) ?? -3;
-          return hl <= si - 2 && al <= si - 2;
-        });
-        if (!allRested) continue;
+          if (hl > si - 2 || al > si - 2) continue;
 
-        const freeCourts = sortedCourts.filter(
-          (c) => !courtOccupied.get(c.id)!.has(si)
-        );
-        if (freeCourts.length < round.length) continue;
+          const freeCourt = sortedCourts.find(
+            (c) => !courtOccupied.get(c.id)!.has(si)
+          );
+          if (!freeCourt) continue;
 
-        round.forEach(([home, away], i) => {
-          const court = freeCourts[i];
-          courtOccupied.get(court.id)!.add(si);
+          courtOccupied.get(freeCourt.id)!.add(si);
           teamLastSlot.set(home.id, si);
           teamLastSlot.set(away.id, si);
           results.push({
@@ -97,12 +94,12 @@ export function generatePoolSchedule(input: ScheduleInput): ScheduledGame[] {
             awayTeamId: away.id,
             poolId: pool.id,
             divisionId: pool.divisionId,
-            courtId: court.id,
+            courtId: freeCourt.id,
             scheduledTime: slots[si],
             gameType: "POOL",
           });
-        });
-        break;
+          break;
+        }
       }
     }
   }
