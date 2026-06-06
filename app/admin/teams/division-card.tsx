@@ -7,7 +7,7 @@ import { GeneratePoolsButton } from "@/app/admin/pools/generate-pools-button";
 
 type PoolTeamEntry = { id: string; seed: number; team: { id: string; name: string } };
 type Pool = { id: string; name: string; teams: PoolTeamEntry[] };
-type Team = { id: string; name: string; contactName: string | null; contactPhone: string | null; divisionId: string };
+type Team = { id: string; name: string; members: string | null; contactName: string | null; contactPhone: string | null; divisionId: string };
 
 type DivisionData = {
   id: string;
@@ -24,10 +24,12 @@ export function DivisionCard({ division }: { division: DivisionData }) {
   const [editOpen, setEditOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [editMembers, setEditMembers] = useState("");
   const [editCaptain, setEditCaptain] = useState("");
   const [editPhone, setEditPhone] = useState("");
   const [saving, setSaving] = useState(false);
   const [newName, setNewName] = useState("");
+  const [newMembers, setNewMembers] = useState("");
   const [newCaptain, setNewCaptain] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [adding, setAdding] = useState(false);
@@ -45,13 +47,14 @@ export function DivisionCard({ division }: { division: DivisionData }) {
   function startEdit(team: Team) {
     setEditingId(team.id);
     setEditName(team.name);
+    setEditMembers(team.members ?? "");
     setEditCaptain(team.contactName ?? "");
     setEditPhone(team.contactPhone ?? "");
   }
 
   async function handleSave(teamId: string) {
     setSaving(true);
-    await updateTeam(teamId, { name: editName, divisionId: division.id, contactName: editCaptain, contactPhone: editPhone });
+    await updateTeam(teamId, { name: editName, divisionId: division.id, members: editMembers, contactName: editCaptain, contactPhone: editPhone });
     setEditingId(null);
     setSaving(false);
     router.refresh();
@@ -67,8 +70,9 @@ export function DivisionCard({ division }: { division: DivisionData }) {
     e.preventDefault();
     if (!newName.trim()) return;
     setAdding(true);
-    await addTeam({ name: newName, divisionId: division.id, contactName: newCaptain, contactPhone: newPhone });
+    await addTeam({ name: newName, divisionId: division.id, members: newMembers, contactName: newCaptain, contactPhone: newPhone });
     setNewName("");
+    setNewMembers("");
     setNewCaptain("");
     setNewPhone("");
     setAdding(false);
@@ -136,6 +140,13 @@ export function DivisionCard({ division }: { division: DivisionData }) {
                       placeholder="Team name"
                       className="input text-sm w-full"
                     />
+                    <textarea
+                      value={editMembers}
+                      onChange={(e) => setEditMembers(e.target.value)}
+                      placeholder="Team members (one per line)"
+                      rows={3}
+                      className="input text-sm w-full resize-none"
+                    />
                     <div className="grid grid-cols-2 gap-2">
                       <input
                         value={editCaptain}
@@ -180,6 +191,13 @@ export function DivisionCard({ division }: { division: DivisionData }) {
               onChange={(e) => setNewName(e.target.value)}
               required
               className="input text-sm w-full"
+            />
+            <textarea
+              placeholder="Team members (one per line)"
+              value={newMembers}
+              onChange={(e) => setNewMembers(e.target.value)}
+              rows={3}
+              className="input text-sm w-full resize-none"
             />
             <div className="grid grid-cols-2 gap-2">
               <input

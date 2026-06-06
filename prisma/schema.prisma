@@ -58,6 +58,7 @@ model Division {
 model Team {
   id           String     @id @default(cuid())
   name         String
+  members      String?
   contactName  String?
   contactPhone String?
   divisionId   String

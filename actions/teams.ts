@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 export async function addTeam(data: {
   name: string;
   divisionId: string;
+  members?: string;
   contactName?: string;
   contactPhone?: string;
 }) {
@@ -16,6 +17,7 @@ export async function addTeam(data: {
     data: {
       name: data.name.trim(),
       divisionId: data.divisionId,
+      members: data.members?.trim() || null,
       contactName: data.contactName?.trim() || null,
       contactPhone: data.contactPhone?.trim() || null,
     },
@@ -29,6 +31,7 @@ export async function updateTeam(
   data: {
     name: string;
     divisionId: string;
+    members?: string;
     contactName?: string;
     contactPhone?: string;
   }
@@ -41,6 +44,7 @@ export async function updateTeam(
     data: {
       name: data.name.trim(),
       divisionId: data.divisionId,
+      members: data.members?.trim() || null,
       contactName: data.contactName?.trim() || null,
       contactPhone: data.contactPhone?.trim() || null,
     },
