@@ -21,9 +21,9 @@ async function main() {
   });
 
   // Courts
-  await prisma.court.upsert({ where: { id: "court-1" }, update: { name: "North" }, create: { id: "court-1", name: "North", order: 1 } });
-  await prisma.court.upsert({ where: { id: "court-2" }, update: { name: "West" }, create: { id: "court-2", name: "West", order: 2 } });
-  await prisma.court.upsert({ where: { id: "court-3" }, update: { name: "East" }, create: { id: "court-3", name: "East", order: 3 } });
+  await prisma.court.upsert({ where: { id: "court-1" }, update: { name: "Faith" }, create: { id: "court-1", name: "Faith", order: 1 } });
+  await prisma.court.upsert({ where: { id: "court-2" }, update: { name: "Hope" }, create: { id: "court-2", name: "Hope", order: 2 } });
+  await prisma.court.upsert({ where: { id: "court-3" }, update: { name: "Peace" }, create: { id: "court-3", name: "Peace", order: 3 } });
 
   // Users
   const adminHash = await bcrypt.hash("lovelifts2026", 12);
