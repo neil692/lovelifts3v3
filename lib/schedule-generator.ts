@@ -62,10 +62,10 @@ export function generatePoolSchedule(input: ScheduleInput): ScheduledGame[] {
   // Pre-generate all rounds per pool, then schedule breadth-first (round 1 of
   // every pool before round 2 of any pool). This ensures every division gets an
   // early slot rather than later divisions being pushed to mid-morning.
-  const allPoolRounds = pools.map((pool) => ({
-    pool,
-    rounds: generateRounds(pool.teams),
-  }));
+  // Sort by most rounds first so pools with more games get the earliest slots.
+  const allPoolRounds = pools
+    .map((pool) => ({ pool, rounds: generateRounds(pool.teams) }))
+    .sort((a, b) => b.rounds.length - a.rounds.length);
 
   const maxRounds = Math.max(0, ...allPoolRounds.map((pr) => pr.rounds.length));
 
