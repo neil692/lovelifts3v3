@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addTeam, updateTeam, deleteTeam, renameDivision } from "@/actions/teams";
+import { toast } from "sonner";
 import { GeneratePoolsButton } from "@/app/admin/pools/generate-pools-button";
 
 type PoolTeamEntry = { id: string; seed: number; team: { id: string; name: string } };
@@ -65,8 +66,12 @@ export function DivisionCard({ division }: { division: DivisionData }) {
 
   async function handleDelete(team: Team) {
     if (!confirm(`Delete "${team.name}"?`)) return;
-    await deleteTeam(team.id);
-    router.refresh();
+    const result = await deleteTeam(team.id);
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
+      router.refresh();
+    }
   }
 
   async function handleAdd(e: React.FormEvent) {

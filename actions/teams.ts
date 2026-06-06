@@ -58,9 +58,14 @@ export async function updateTeam(
 }
 
 export async function deleteTeam(id: string) {
-  await prisma.team.delete({ where: { id } });
-  revalidatePath("/admin/teams");
-  revalidatePath("/");
+  try {
+    await prisma.poolTeam.deleteMany({ where: { teamId: id } });
+    await prisma.team.delete({ where: { id } });
+    revalidatePath("/admin/teams");
+    revalidatePath("/");
+  } catch (e) {
+    return { error: "Could not delete team — it may have games assigned." };
+  }
 }
 
 export async function renameDivision(id: string, name: string) {
